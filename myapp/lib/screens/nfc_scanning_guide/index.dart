@@ -3,25 +3,29 @@ import 'package:flutter/material.dart';
 import 'package:myapp/constants/text_styles.dart';
 import 'package:myapp/constants/app_icons.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:myapp/models/list_item.dart';
+import 'package:myapp/screens/nfc_scanning_guide/video_widget.dart';
+import 'package:myapp/widgets/active_button.dart';
+import 'package:video_player/video_player.dart';
 
 class NFCScanningGuide extends StatefulWidget {
-  const NFCScanningGuide({super.key});
+  NFCScanningGuide({super.key});
 
   @override
   State<NFCScanningGuide> createState() => _NFCScanningGuideState();
 }
-class ListItem {
-  final String icon;
-  final String title;
 
-  ListItem(this.icon, this.title);
-}
 class _NFCScanningGuideState extends State<NFCScanningGuide> {
   final List<ListItem> yourList = [
     ListItem(AppIcons.ICON_SCREEN, 'Text 1'),
     ListItem(AppIcons.ICON_SCREEN, 'Text 2'),
     ListItem(AppIcons.ICON_SCREEN, 'Text 3'),
   ];
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -60,6 +64,7 @@ class _NFCScanningGuideState extends State<NFCScanningGuide> {
       body: Container(
         child: Padding(
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               Text(
                 'Hướng dẫn quét thồng tin trong chip CCCD ejhsurh sdhgrhehr ehri eriehirh ehiriehr ehri eihr',
@@ -67,8 +72,22 @@ class _NFCScanningGuideState extends State<NFCScanningGuide> {
               ),
               Column(
                 children: getList(),
+              ),
+              Text('Video hướng dẫn', style: TextStyles.big,),
+              VideoWidget(
+                //videoUrl: 'https://www.youtube.com/watch?v=HXfn_1guF_I',
+                videoUrl: 'https://flutter.github.io/assets-for-api-docs/assets/videos/bee.mp4',
+              ),
+              Text('Sau khi đã hiểu, hãy bắt đầu', style: TextStyles.normal,),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Expanded(child: ActiveButton(title: 'Bỏ qua', onPress: (){},)),
+                  Expanded(child: ActiveButton(title: 'Bắt đầu quét', onPress: (){},)),
+                ],
               )
             ],
+
           ),
           padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10)
         )
