@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:myapp/screens/camera_scan/index.dart';
 import 'package:myapp/screens/nfc_scanning_guide/index.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(const MyApp());
 }
 
@@ -17,7 +19,8 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: NFCScanningGuide(),
+      //home: NFCScanningGuide(),
+      home: CameraScan()
     );
   }
 }
