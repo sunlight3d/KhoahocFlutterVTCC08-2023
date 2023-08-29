@@ -40,6 +40,7 @@ dependencies:
   youtube_player_flutter: ^8.1.2
   camera: ^0.10.5+3
   path_provider: ^2.1.0
+  rflutter_alert: ^2.0.7
 
 dev_dependencies:
   flutter_test:

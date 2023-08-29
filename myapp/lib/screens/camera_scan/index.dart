@@ -4,7 +4,9 @@ import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:myapp/constants/app_icons.dart';
+import 'package:myapp/screens/camera_scan/oval_painter.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 
 class CameraScan extends StatefulWidget {
   CameraScan({super.key});
@@ -22,6 +24,9 @@ class _CameraScanState extends State<CameraScan> {
   void initState() {
     super.initState();
     _initializeCamera();
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
+      _onAlertWithCustomContentPressed(context);
+    });
   }
 
   Future<void> _initializeCamera() async {
@@ -127,6 +132,7 @@ class _CameraScanState extends State<CameraScan> {
                         ),
                         onTap: () {
                           print("haha");
+                          _onAlertWithCustomContentPressed(context);
                         },
                       ),
                       Expanded(
@@ -237,6 +243,7 @@ class _CameraScanState extends State<CameraScan> {
                               'Chụp tự động',
                               style: TextStyle(fontSize: 15),
                             ),
+
                           ],
                         ),
                       ),
@@ -250,40 +257,109 @@ class _CameraScanState extends State<CameraScan> {
       ),
     );
   }
+  _onAlertWithCustomContentPressed(context) {
+    var alert = Alert(
+        context: context,
+        style: AlertStyle(
+            isCloseButton: false,
+            alertAlignment: Alignment.bottomCenter,
+            backgroundColor:Colors.black.withOpacity(0.0),
+            overlayColor: Colors.black.withOpacity(0.0),
+        ),
+        content: Column(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            Container(
+              //color: Colors.white,
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.all(Radius.circular(10)),
+                  color: Colors.white
+              ),
+              child: Column(children: [
+                Text(
+                  'Lưu ý khi chụp hình',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(fontSize: 16, fontWeight:  FontWeight.bold),
+                ),
+                SizedBox(height: 10,),
+                Row(
+                  children: [
+                    IconButton(
+                      onPressed: () {},
+                      icon: const Icon(Icons.favorite, size: 24, color: Colors.red),
+                    ),
+                    Text(
+                      'Chụp chính diện',
+                      style: TextStyle(fontSize: 15),
+                    ),
+                  ],
+                ),
+                SizedBox(height: 10,),
+                Row(
+                  children: [
+                    IconButton(
+                      onPressed: () {},
+                      icon: const Icon(Icons.favorite, size: 24, color: Colors.red),
+                    ),
+                    Expanded(child: Text(
+                      'Đưa toàn bộ khuôn mặt vào khung quy định',
+                      style: TextStyle(fontSize: 15),
+                    )),
+                  ],
+                ),
+                SizedBox(height: 10,),
+                Row(
+                  children: [
+                    IconButton(
+                      onPressed: () {},
+                      icon: const Icon(Icons.favorite, size: 24, color: Colors.red),
+                    ),
+                    Expanded(child: Text(
+                      'Không đeo kính râm',
+                      style: TextStyle(fontSize: 15),
+                    )),
+                  ],
+                ),
+                SizedBox(height: 10,),
+                Row(
+                  children: [
+                    IconButton(
+                      onPressed: () {},
+                      icon: const Icon(Icons.favorite, size: 24, color: Colors.red),
+                    ),
+                    Expanded(child: Text(
+                      'Không đeo khẩu trang',
+                      style: TextStyle(fontSize: 15),
+                    )),
+                  ],
+                ),
+              ],),
+              color: Colors.white,
+              padding: EdgeInsets.symmetric(vertical: 15),
+            ),
+            SizedBox(height: 10,),
+            InkWell(
+              child: Container(
+                child: Text('Đã hiểu', textAlign: TextAlign.center,),
+                padding: EdgeInsets.all(10),
+
+                width: double.infinity, // Chiều ngang bằng với parent
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10), // Border radius = 10
+                  color: Colors.white,
+                ),
+              ),
+              onTap: (){
+                Navigator.pop(context);
+              },
+            )
+          ],
+        ),
+
+        buttons: [
+
+        ]);
+    alert.show();
+  }
 }
 
-class OvalPainter extends CustomPainter {
-  @override
-  void paint(Canvas canvas, Size size) {
-    final strokePaint = Paint()
-      ..color = Colors.white
-      ..strokeWidth = 5.0
-      ..style = PaintingStyle.stroke;
-
-    final redPaint = Paint()
-      ..color = Colors.grey;
-
-    final center = Offset(size.width / 2, size.height / 2);
-    final radiusX = size.width / 2 - 0.9 * size.width;
-    final radiusY = size.height / 2 - 0.9 * size.height;
-
-    final path = Path()
-      ..addOval(Rect.fromCenter(center: center, width: radiusX * 2, height: radiusY * 2));
-
-    canvas.drawPath(path, strokePaint);
-
-    canvas.drawPath(
-      Path.combine(
-        PathOperation.difference,
-        Path()..addRect(Rect.fromLTWH(0, 0, size.width, size.height)),
-        path,
-      ),
-      redPaint,
-    );
-  }
-
-  @override
-  bool shouldRepaint(CustomPainter oldDelegate) {
-    return false;
-  }
-}
