@@ -1,9 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:myapp/screens/camera_scan/index.dart';
 import 'package:myapp/screens/nfc_scanning_guide/index.dart';
+import 'package:myapp/screens/profile/index.dart';
+import 'package:get_it/get_it.dart';
+import 'package:myapp/services/index.dart';
 
+
+GetIt locator = GetIt.instance;
+void setupLocator() {
+  locator.registerLazySingleton(() => UserService());//like AddServices in .net core mvc
+  locator.registerLazySingleton(() => ProductService());
+}
+
+/*
+Detail user: https://randomuser.me/api/
+
+* */
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
+  setupLocator(); // Đảm bảo gọi hàm setupLocator trước runApp
   runApp(const MyApp());
 }
 
@@ -20,7 +35,8 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
       ),
       //home: NFCScanningGuide(),
-      home: CameraScan()
+      //home: CameraScan()
+      home: Profile()
     );
   }
 }

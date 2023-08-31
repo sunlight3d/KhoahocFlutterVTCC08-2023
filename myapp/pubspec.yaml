@@ -41,6 +41,8 @@ dependencies:
   camera: ^0.10.5+3
   path_provider: ^2.1.0
   rflutter_alert: ^2.0.7
+  http: ^1.1.0
+  get_it: ^7.6.0
 
 dev_dependencies:
   flutter_test:
