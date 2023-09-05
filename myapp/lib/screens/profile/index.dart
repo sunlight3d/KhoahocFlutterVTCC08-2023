@@ -4,7 +4,12 @@ import 'package:get_it/get_it.dart';
 import 'package:myapp/models/user.dart';
 import 'package:myapp/services/index.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
-
+/*
+Nội dung nghiên cứu buổi sau:
+-Bấm vào ảnh profile => cho chọn ảnh
+-Viết màn hình Settings, có switcher(chuyển dark mode)
+-Navigation nhiều màn hình
+* */
 class Profile extends StatefulWidget {
   Profile({super.key});
   @override
