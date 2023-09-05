@@ -62,7 +62,7 @@ class User {
     return other is User &&
         other.gender == gender &&
         other.name == name &&
-        other.location == location &&
+        //other.location == location &&
         other.email == email &&
         other.dob == dob &&
         other.userName == userName &&

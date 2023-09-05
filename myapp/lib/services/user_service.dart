@@ -9,7 +9,7 @@ import 'package:myapp/services/base_service.dart';
 class UserService extends BaseService{
   UserService() : super();
   Future<User> fetchUserData() async {
-    final response = await this.fetchGET('${baseUrl}'); //users, /products/...
+    final response = await fetchGET('${baseUrl}'); //users, /products/...
     User user = User.empty;
     if (response != null) {
       // Kiểm tra xem response có giá trị không null

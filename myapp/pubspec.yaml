@@ -43,6 +43,7 @@ dependencies:
   rflutter_alert: ^2.0.7
   http: ^1.1.0
   get_it: ^7.6.0
+  loading_animation_widget: ^1.2.0+4
 
 dev_dependencies:
   flutter_test:
