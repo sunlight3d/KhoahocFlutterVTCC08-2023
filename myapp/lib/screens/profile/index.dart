@@ -4,6 +4,9 @@ import 'package:get_it/get_it.dart';
 import 'package:myapp/models/user.dart';
 import 'package:myapp/services/index.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:myapp/widgets/image_picker_dialog.dart';
+
 /*
 Nội dung nghiên cứu buổi sau:
 -Bấm vào ảnh profile => cho chọn ảnh
@@ -143,20 +146,34 @@ class _ProfileState extends State<Profile> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Container(
-                      width: 80, // Độ rộng của avatar
-                      height: 80, // Độ cao của avatar
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        border: Border.all(
-                          color: Colors.white,
-                          width: 2, // Độ dày viền trắng
-                        ),
-                        image: DecorationImage(
-                          image: NetworkImage(this.user.picture.large), // Đường dẫn hình ảnh từ URL
-                          fit: BoxFit.cover, // Cách hình ảnh sẽ fit trong vùng giới hạn của nó
+                    InkWell(
+                      child: Container(
+                        width: 80, // Độ rộng của avatar
+                        height: 80, // Độ cao của avatar
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          border: Border.all(
+                            color: Colors.white,
+                            width: 2, // Độ dày viền trắng
+                          ),
+                          image: DecorationImage(
+                            image: NetworkImage(this.user.picture.large), // Đường dẫn hình ảnh từ URL
+                            fit: BoxFit.cover, // Cách hình ảnh sẽ fit trong vùng giới hạn của nó
+                          ),
                         ),
                       ),
+                      onTap: () {
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return ImagePickerDialog(
+                              onImageSelected: (List<XFile>? files) async {
+                                print("haha");
+                              },
+                            );
+                          },
+                        );
+                      },
                     ),
                     SizedBox(height: 10), // Khoảng cách giữa avatar và tên người dùng
                     Text(
