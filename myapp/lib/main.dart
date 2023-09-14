@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:myapp/blocs/settings/bloc.dart';
 import 'package:myapp/screens/camera_scan/index.dart';
+import 'package:myapp/screens/home/index.dart';
 import 'package:myapp/screens/nfc_scanning_guide/index.dart';
 import 'package:myapp/screens/profile/index.dart';
 import 'package:get_it/get_it.dart';
@@ -36,7 +39,15 @@ class MyApp extends StatelessWidget {
       ),
       //home: NFCScanningGuide(),
       //home: CameraScan()
-      home: Profile()
+      //home: Profile()
+      home: MultiBlocProvider(
+        providers: [
+          BlocProvider<SettingsBloc>(
+            create: (context) => SettingsBloc(),
+          ),
+        ],
+        child: HomeScreen(),
+      )
     );
   }
 }
