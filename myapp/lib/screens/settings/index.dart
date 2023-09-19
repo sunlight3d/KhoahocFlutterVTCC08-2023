@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:myapp/blocs/settings/bloc.dart';
-import 'package:myapp/blocs/settings/event.dart';
+import 'package:myapp/blocs/settings/cubit.dart';
 import 'package:myapp/blocs/settings/state.dart';
 
 class SettingsScreen extends StatelessWidget {
@@ -11,47 +10,38 @@ class SettingsScreen extends StatelessWidget {
       appBar: AppBar(
         title: Text('Settings'),
       ),
-      body: BlocProvider(
-        create: (context) => SettingsBloc(),
-        child: BlocBuilder<SettingsBloc, SettingsState>(
-          builder: (context, state) {
-            if (state is SettingsState) {
-              final isDarkMode = state.isDarkMode;
-              final isVietnamese = state.isVietnamese;
+      body: BlocBuilder<SettingCubit, SettingsState>(
+        builder: (context, state) {
+          print('SettignScreen, language is: ${state.isVietnamese}, mode is ${state.isDarkMode}');
+          return Column(
+            children: [
+              SwitchListTile(
+                title: Text('Enable Dark Mode'),
+                value: state.isDarkMode,
+                onChanged: (_) {
+                  context.read<SettingCubit>().changeSettings(!state.isDarkMode, state.isVietnamese);
+                },
+              ),
 
-              return Column(
-                children: [
-                  SwitchListTile(
-                    title: Text('Enable Dark Mode'),
-                    value: isDarkMode,
-                    onChanged: (_) {
-                      BlocProvider.of<SettingsBloc>(context).add(ToggleDarkModeEvent(!isDarkMode));
-                    },
-                  ),
-
-                  RadioListTile<bool>(
-                    title: Text('English'),
-                    value: false,
-                    groupValue: !isVietnamese,
-                    onChanged: (value) {
-                      BlocProvider.of<SettingsBloc>(context).add(LanguageChangedEvent(!value!));
-                    },
-                  ),
-                  RadioListTile<bool>(
-                    title: Text('Vietnamese'),
-                    value: true,
-                    groupValue: isVietnamese,
-                    onChanged: (value) {
-                      BlocProvider.of<SettingsBloc>(context).add(LanguageChangedEvent(value!));
-                    },
-                  ),
-                ],
-              );
-            }
-
-            return CircularProgressIndicator();
-          },
-        ),
+              RadioListTile<bool>(
+                title: Text('English'),
+                value: false, // Đặt giá trị cho trạng thái English
+                groupValue: state.isVietnamese, // Đối chiếu với trạng thái Vietnamese
+                onChanged: (value) {
+                  context.read<SettingCubit>().changeSettings(state.isDarkMode, false);
+                },
+              ),
+              RadioListTile<bool>(
+                title: Text('Vietnamese'),
+                value: true, // Đặt giá trị cho trạng thái Vietnamese
+                groupValue: state.isVietnamese, // Đối chiếu với trạng thái Vietnamese
+                onChanged: (value) {
+                  context.read<SettingCubit>().changeSettings(state.isDarkMode, true);
+                },
+              ),
+            ],
+          );
+        },
       ),
     );
   }
