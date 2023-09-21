@@ -19,7 +19,9 @@ class SettingsScreen extends StatelessWidget {
                 title: Text('Enable Dark Mode'),
                 value: state.isDarkMode,
                 onChanged: (_) {
+                  //dispatch an action
                   context.read<SettingCubit>().changeSettings(!state.isDarkMode, state.isVietnamese);
+
                 },
               ),
 

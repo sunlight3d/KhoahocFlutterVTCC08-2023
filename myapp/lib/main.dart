@@ -30,9 +30,13 @@ void main() async {
   setupLocator(); // Đảm bảo gọi hàm setupLocator trước runApp
   runApp(
     EasyLocalization(
-      supportedLocales: [Locale('en', ''), Locale('vi', '')], // Danh sách ngôn ngữ được hỗ trợ
+      supportedLocales: [
+        Locale('en', 'US'),
+        Locale('vi', 'VN')
+      ], // Danh sách ngôn ngữ được hỗ trợ
       path: 'assets/languages', // Thư mục chứa tệp dịch (`.json`)
-      fallbackLocale: Locale('en', ''), // Ngôn ngữ mặc định
+      //fallbackLocale: Locale('en', 'US'), // Ngôn ngữ mặc định
+      fallbackLocale: Locale('vi', 'VN'), // Ngôn ngữ mặc định
       child: MultiBlocProvider(
         providers: [
           BlocProvider<SettingCubit>(
@@ -54,6 +58,10 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
+      localizationsDelegates: context.localizationDelegates,
+      supportedLocales: context.supportedLocales,
+      //locale: context.locale,
+      locale: context.supportedLocales[1],
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
