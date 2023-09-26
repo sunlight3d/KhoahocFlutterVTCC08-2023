@@ -1,9 +1,12 @@
+import 'dart:async';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get_it/get_it.dart';
 import 'package:myapp/blocs/settings/cubit.dart';
 import 'package:myapp/blocs/settings/state.dart';
-import 'package:myapp/databases/database_helper.dart';
+import 'package:myapp/databases/sqlite_db_helper.dart';
 import 'package:myapp/models/task.dart';
 import 'package:myapp/screens/settings/index.dart';
 class HomeScreen extends StatefulWidget {
@@ -15,13 +18,21 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   final TextEditingController _nameController = TextEditingController();
+  late SQLiteDBHelper _sqliteDBHelper;
+  int _limit = 10;
+  int _offset = 0;
+
   DateTime _selectedDateTime = DateTime.now();
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-
+    _sqliteDBHelper = GetIt.instance<SQLiteDBHelper>();//Dependency Injection
+    //_sqliteDBHelper.getTasks();
+    //StreamController<List<Task>> _tasksController = StreamController<List<Task>>.broadcast();
+    //_sqliteDBHelper.tasksStream = _tasksController.stream;
+    //_sqliteDBHelper.clear();
   }
   @override
   Widget build(BuildContext context) {
@@ -35,46 +46,74 @@ class _HomeScreenState extends State<HomeScreen> {
           final language = state.isVietnamese ? 'Tiếng Việt': 'Tiếng Anh';
           final mode = state.isDarkMode ? 'Chế độ tối':'Chế độ sáng';
           print('HomeScreen, language is: ${language}, mode is ${mode}');
-          return Column(
-            children: [
-              ElevatedButton(
-                onPressed: () {
-                  // Sử dụng Navigator để điều hướng đến SettingsScreen
-                  Navigator.pushNamed(context, '/settings');
-                },
-                child: Text('Navigate To Settings'),
-              ),
-              Text(
-                mode,
-                style: TextStyle(fontSize: 20),
-              ),
-              Text(
-                'Ngôn ngữ : ${language}',
-                style: TextStyle(fontSize: 20),
-              ),
-              Text('appTitle').tr(),
-              Text('welcomeMessage'.tr(args: ['John'])),
-              TextFormField(
-                controller: _nameController,
-                decoration: InputDecoration(labelText: 'Tên Công Việc'),
-              ),
-              SizedBox(height: 16.0),
-              ElevatedButton(
-                onPressed: () {
-                  _showDateTimePicker(context);
-                },
-                child: Text('Chọn Thời Gian Bắt Đầu'),
-              ),
-              SizedBox(height: 16.0),
-              Text('Thời Gian Bắt Đầu: ${_selectedDateTime.toString()}'),
-              SizedBox(height: 16.0),
-              ElevatedButton(
-                onPressed: () {
-                  _saveTask(context);
-                },
-                child: Text('Lưu'),
-              ),
-            ],
+          return Padding(
+              padding: EdgeInsets.symmetric(horizontal: 10),
+              child: Column(
+              children: [
+                ElevatedButton(
+                  onPressed: () {
+                    // Sử dụng Navigator để điều hướng đến SettingsScreen
+                    Navigator.pushNamed(context, '/settings');
+                  },
+                  child: Text('Navigate To Settings'),
+                ),
+                Text(
+                  mode,
+                  style: TextStyle(fontSize: 20),
+                ),
+                Text(
+                  'Ngôn ngữ : ${language}',
+                  style: TextStyle(fontSize: 20),
+                ),
+                Text('appTitle').tr(),
+                Text('welcomeMessage'.tr(args: ['John'])),
+                TextFormField(
+                  controller: _nameController,
+                  decoration: InputDecoration(labelText: 'Tên Công Việc'),
+                ),
+                SizedBox(height: 16.0),
+                ElevatedButton(
+                  onPressed: () {
+                    _showDateTimePicker(context);
+                  },
+                  child: Text('Chọn Thời Gian Bắt Đầu'),
+                ),
+                SizedBox(height: 16.0),
+                Text('Thời Gian Bắt Đầu: ${_selectedDateTime.toString()}'),
+                SizedBox(height: 16.0),
+                ElevatedButton(
+                  onPressed: () {
+                    _saveTask(context);
+                  },
+                  child: Text('Lưu'),
+                ),
+
+                Expanded(
+                  child: StreamBuilder<List<Task>>(
+                    stream: _sqliteDBHelper.tasksStream,
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return CircularProgressIndicator(); // Show loading indicator
+                      } else if (snapshot.hasError) {
+                        return Text('Error: ${snapshot.error}');
+                      } else if (!snapshot.hasData) {
+                        return Text('No data available');
+                      } else {
+                        return ListView.builder(
+                          itemCount: snapshot.data?.length ?? 0,
+                          itemBuilder: (context, index) {
+                            return ListTile(
+                              title: Text(snapshot.data![index].name),
+                            );
+                          },
+                        );
+                      }
+                    },
+                  ),
+                ),
+                Text('Footer')
+              ],
+            ),
           );
         },
       ),
@@ -114,12 +153,11 @@ class _HomeScreenState extends State<HomeScreen> {
   void _saveTask(BuildContext context) {
     final String name = _nameController.text;
     final String startTime = _selectedDateTime.toLocal().toString();
-    final DatabaseHelper dbHelper = DatabaseHelper();
 
     final Task task = Task(name: name, startTime: startTime);
 
-    dbHelper.insertTask(task).then((_) {
-      Navigator.of(context).pop();
+    _sqliteDBHelper.insertTask(task).then((_) {
+      //Navigator.of(context).pop();
     });
   }
 

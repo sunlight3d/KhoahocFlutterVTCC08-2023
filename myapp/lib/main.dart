@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:myapp/blocs/app_bloc_observer.dart';
 import 'package:myapp/blocs/settings/cubit.dart';
+import 'package:myapp/databases/sqlite_db_helper.dart';
 import 'package:myapp/screens/camera_scan/index.dart';
 import 'package:myapp/screens/home/index.dart';
 import 'package:myapp/screens/nfc_scanning_guide/index.dart';
@@ -17,6 +18,7 @@ GetIt locator = GetIt.instance;
 void setupLocator() {
   locator.registerLazySingleton(() => UserService());//like AddServices in .net core mvc
   locator.registerLazySingleton(() => ProductService());
+  locator.registerLazySingleton(() => SQLiteDBHelper());
 }
 
 /*
