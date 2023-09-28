@@ -51,6 +51,7 @@ void main() async {
           // ... Các BlocProvider khác nếu có
         ],
         child: MyApp(),
+        //Google Maps, lat long location
       ), // Thay thế MyApp() bằng tên ứng dụng của bạn
     ),
   );
