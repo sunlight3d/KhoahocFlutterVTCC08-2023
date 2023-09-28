@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:myapp/blocs/app_bloc_observer.dart';
 import 'package:myapp/blocs/settings/cubit.dart';
+import 'package:myapp/blocs/tasks/cubit.dart';
 import 'package:myapp/databases/sqlite_db_helper.dart';
 import 'package:myapp/screens/camera_scan/index.dart';
 import 'package:myapp/screens/home/index.dart';
@@ -43,6 +44,9 @@ void main() async {
         providers: [
           BlocProvider<SettingCubit>(
             create: (context) => SettingCubit(),
+          ),
+          BlocProvider<TaskCubit>(
+            create: (context) => TaskCubit(),
           ),
           // ... Các BlocProvider khác nếu có
         ],

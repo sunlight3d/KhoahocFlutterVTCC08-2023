@@ -6,6 +6,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:myapp/blocs/settings/cubit.dart';
 import 'package:myapp/blocs/settings/state.dart';
+import 'package:myapp/blocs/tasks/cubit.dart';
+import 'package:myapp/blocs/tasks/state.dart';
 import 'package:myapp/databases/sqlite_db_helper.dart';
 import 'package:myapp/models/task.dart';
 import 'package:myapp/screens/settings/index.dart';
@@ -18,17 +20,12 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   final TextEditingController _nameController = TextEditingController();
-  late SQLiteDBHelper _sqliteDBHelper;
-  int _limit = 10;
-  int _offset = 0;
-
   DateTime _selectedDateTime = DateTime.now();
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    _sqliteDBHelper = GetIt.instance<SQLiteDBHelper>();//Dependency Injection
     //_sqliteDBHelper.getTasks();
     //StreamController<List<Task>> _tasksController = StreamController<List<Task>>.broadcast();
     //_sqliteDBHelper.tasksStream = _tasksController.stream;
@@ -83,31 +80,25 @@ class _HomeScreenState extends State<HomeScreen> {
                 SizedBox(height: 16.0),
                 ElevatedButton(
                   onPressed: () {
-                    _saveTask(context);
+                    final String name = _nameController.text;
+                    final String startTime = _selectedDateTime.toLocal().toString();
+                    final Task task = Task(name: name, startTime: startTime);
+                    context.read<TaskCubit>().insertTask(task);
                   },
                   child: Text('Lưu'),
                 ),
 
                 Expanded(
-                  child: StreamBuilder<List<Task>>(
-                    stream: _sqliteDBHelper.tasksStream,
-                    builder: (context, snapshot) {
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        return CircularProgressIndicator(); // Show loading indicator
-                      } else if (snapshot.hasError) {
-                        return Text('Error: ${snapshot.error}');
-                      } else if (!snapshot.hasData) {
-                        return Text('No data available');
-                      } else {
-                        return ListView.builder(
-                          itemCount: snapshot.data?.length ?? 0,
-                          itemBuilder: (context, index) {
-                            return ListTile(
-                              title: Text(snapshot.data![index].name),
-                            );
-                          },
-                        );
-                      }
+                  child: BlocBuilder<TaskCubit, TasksState>(
+                    builder: (context, state) {
+                      return ListView.  builder(
+                        itemCount: state.tasks.length,
+                        itemBuilder: (context, index) {
+                          return ListTile(
+                            title: Text(state.tasks[index].name),
+                          );
+                        },
+                      );
                     },
                   ),
                 ),
@@ -149,17 +140,5 @@ class _HomeScreenState extends State<HomeScreen> {
       }
     });
   }
-
-  void _saveTask(BuildContext context) {
-    final String name = _nameController.text;
-    final String startTime = _selectedDateTime.toLocal().toString();
-
-    final Task task = Task(name: name, startTime: startTime);
-
-    _sqliteDBHelper.insertTask(task).then((_) {
-      //Navigator.of(context).pop();
-    });
-  }
-
 }
 

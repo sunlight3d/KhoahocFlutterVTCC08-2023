@@ -51,9 +51,9 @@ class SQLiteDBHelper {
     final db = await database;
     await db.insert(_tableName, task.toMap());
     // After insertion, retrieve the updated list of tasks.
-    final tasks = await getTasks();
+    //final tasks = await getTasks();
     // Add the updated list of tasks to the stream.
-    _tasksController.add(tasks);
+    //_tasksController.add(tasks);
   }
 
   Future<List<Task>> getTasks() async {
@@ -81,7 +81,7 @@ class SQLiteDBHelper {
       whereArgs: [task.id], // Value to substitute into the WHERE clause
     );
   }
-  Future<void> deleteNote(int id) async {
+  Future<void> deleteTask(int id) async {
     final db = await database;
 
     await db.delete(
