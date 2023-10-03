@@ -1,10 +1,14 @@
+import 'dart:io';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:myapp/blocs/app_bloc_observer.dart';
 import 'package:myapp/blocs/settings/cubit.dart';
 import 'package:myapp/blocs/tasks/cubit.dart';
 import 'package:myapp/databases/sqlite_db_helper.dart';
+import 'package:myapp/screens/Location/index.dart';
 import 'package:myapp/screens/camera_scan/index.dart';
 import 'package:myapp/screens/home/index.dart';
 import 'package:myapp/screens/nfc_scanning_guide/index.dart';
@@ -77,9 +81,12 @@ class MyApp extends StatelessWidget {
       //home: CameraScan()
       //home: Profile()
       home: HomeScreen(),
+      //home: LocationScreen(),
       // Thêm Routes để định nghĩa đường dẫn đến SettingsScreen
       routes: {
         '/settings': (context) => SettingsScreen(),
+        '/location': (context) => LocationScreen(),
+        '/home': (context) => HomeScreen(),
       },
     );
   }

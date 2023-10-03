@@ -9,8 +9,11 @@ import 'package:myapp/blocs/settings/state.dart';
 import 'package:myapp/blocs/tasks/cubit.dart';
 import 'package:myapp/blocs/tasks/state.dart';
 import 'package:myapp/databases/sqlite_db_helper.dart';
+import 'package:myapp/models/location.dart';
 import 'package:myapp/models/task.dart';
-import 'package:myapp/screens/settings/index.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:google_maps_place_picker_mb/google_maps_place_picker.dart';
+
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
@@ -78,6 +81,17 @@ class _HomeScreenState extends State<HomeScreen> {
                 SizedBox(height: 16.0),
                 Text('Thời Gian Bắt Đầu: ${_selectedDateTime.toString()}'),
                 SizedBox(height: 16.0),
+                ElevatedButton(
+                    onPressed: (){
+
+                      Navigator.pushNamed(
+                        context, '/location',
+                        arguments: (Location location){
+
+                        },);
+                    },
+                    child: Text('Select Location')
+                ),
                 ElevatedButton(
                   onPressed: () {
                     final String name = _nameController.text;
