@@ -56,5 +56,10 @@
 	<string>We need your location for...</string>
 	<key>NSLocationAlwaysUsageDescription</key>
 	<string>We need your location for...</string>
+    <key>UIBackgroundModes</key>
+        <array>
+            <string>fetch</string>
+            <string>remote-notification</string>
+        </array>
 </dict>
 </plist>

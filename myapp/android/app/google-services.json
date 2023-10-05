@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "102943424137",
+    "project_id": "vtccapp-ee91f",
+    "storage_bucket": "vtccapp-ee91f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:102943424137:android:692ee7fabb46f671e29058",
+        "android_client_info": {
+          "package_name": "com.example.myapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDdZ3iapqQSl6ki1IbenjqtzQSHZjcAA00"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

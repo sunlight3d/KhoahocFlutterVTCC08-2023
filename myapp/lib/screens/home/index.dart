@@ -86,8 +86,11 @@ class _HomeScreenState extends State<HomeScreen> {
 
                       Navigator.pushNamed(
                         context, '/location',
-                        arguments: (Location location){
-
+                        arguments: ({
+                          required double lat,
+                          required double lon,
+                          required String address}){
+                          print('haha');
                         },);
                     },
                     child: Text('Select Location')

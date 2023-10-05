@@ -46,6 +46,7 @@ class _LocationScreenState extends State<LocationScreen> {
   }
   @override
   Widget build(BuildContext context) {
+    LocationFunction locationFunction = ModalRoute.of(context)!.settings.arguments as LocationFunction;
     return Scaffold(
       body: SafeArea(
         child: Container(
@@ -71,9 +72,13 @@ class _LocationScreenState extends State<LocationScreen> {
               PlacePicker(
                 apiKey: 'AIzaSyCv6Bez-GpNf48M1s-sNKlaKB68rtMN52g',
                 onPlacePicked: (PickResult? result) {
-                  LocationFunction locationFunction = ModalRoute.of(context)!.settings.arguments as LocationFunction;
-                  //continue...
+                  locationFunction(
+                      lat: result?.geometry?.location.lat ?? 0.0,
+                      lon: result?.geometry?.location.lng ?? 0.0,
+                      address: result?.formattedAddress ?? ''
+                  );
                   print(result?.geometry?.location ?? '');
+                  Navigator.pop(context);
                 },
                 initialPosition: _currentLocation,
                 useCurrentLocation: true,
