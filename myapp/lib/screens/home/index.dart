@@ -13,6 +13,7 @@ import 'package:myapp/models/location.dart';
 import 'package:myapp/models/task.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_place_picker_mb/google_maps_place_picker.dart';
+import 'package:flutter/services.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -33,6 +34,10 @@ class _HomeScreenState extends State<HomeScreen> {
     //StreamController<List<Task>> _tasksController = StreamController<List<Task>>.broadcast();
     //_sqliteDBHelper.tasksStream = _tasksController.stream;
     //_sqliteDBHelper.clear();
+    final MethodChannel platform = MethodChannel('channel_01');
+    platform.invokeMethod('your_native_method_name').then((value) {
+      print('haha');
+    });
   }
   @override
   Widget build(BuildContext context) {

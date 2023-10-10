@@ -16,4 +16,8 @@ import flutter_local_notifications
     GeneratedPluginRegistrant.register(with: self)
     return super.application(application, didFinishLaunchingWithOptions: launchOptions)
   }
+  private func yourNativeMethod() -> String {
+      // Implement your custom native logic here
+      return "Hello from native code!"
+  }
 }
