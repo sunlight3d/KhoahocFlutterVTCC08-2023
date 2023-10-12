@@ -88,7 +88,6 @@ class _HomeScreenState extends State<HomeScreen> {
                 SizedBox(height: 16.0),
                 ElevatedButton(
                     onPressed: (){
-
                       Navigator.pushNamed(
                         context, '/location',
                         arguments: ({
